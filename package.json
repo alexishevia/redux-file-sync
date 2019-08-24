@@ -4,10 +4,13 @@
   "description": "Sync your redux actions to an external file system.",
   "author": "Alexis Hevia <hevia.alexis@gmail.com>",
   "license": "ISC",
-  "main": "index.js",
+  "main": "lib/index.js",
   "directories": {
     "doc": "docs"
   },
+  "files": [
+    "lib"
+  ],
   "dependencies": {
     "dropbox": "^4.0.30",
     "redux": "^4.0.4",
@@ -31,13 +34,16 @@
     "jest": "^24.8.0",
     "lint-staged": "^9.2.1",
     "prettier": "^1.18.2",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "webpack": "^4.39.2",
+    "webpack-cli": "^3.3.7"
   },
   "scripts": {
     "docs": "docsify serve ./docs",
     "lint": "eslint src/**/*.js",
     "test": "jest",
-    "test-debug": "node --inspect-brk=0.0.0.0:9229 ./node_modules/.bin/jest"
+    "test-debug": "node --inspect-brk=0.0.0.0:9229 ./node_modules/.bin/jest",
+    "build": "webpack --entry ./src/index.js -o ./lib/index.js --mode production --output-library-target commonjs-module"
   },
   "jest": {
     "testPathIgnorePatterns": [
