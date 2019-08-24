@@ -127,6 +127,42 @@ class Settings extends React.Component {
 
 The FilePicker requires your "App key", which is available on the [Dropbox App console](https://www.dropbox.com/developers/apps).
 
+## Sync Status
+If you want to know the sync status, you can use the provided `getSyncState()` and `getErrorMessage()` selectors:
+
+```
+import {
+  getSyncState, getErrorMessage, SYNCED, RUNNING, PENDING, FAILED, UNKNOWN,
+} from 'redux-file-sync/lib/selectors'
+
+class YourComponent extends React.Component {
+  render() {
+    const { syncState, errorMessage } = this.props;
+    switch(syncState) {
+      case SYNCED:
+        return <Text>All changes have been synced.</Text>
+      case RUNNING:
+        return <Text>Sync is currently running.</Text>
+      case FAILED:
+        return <Text>Sync Failed: {errorMessage}</Text>
+      case PENDING:
+        return <Text>Some local changes have not been synced yet.</Text>
+      case UNKNOWN:
+      default:
+        return <Text>Could not figure out sync status.</Text>
+    }
+  }
+}
+
+const mapStateToProps = state => ({
+  syncState: getSyncState(state),
+  errorMessage: getErrorMessage(state)
+});
+const mapDispatchToProps = () => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(YourComponent);
+```
+
 ## How Does redux-file-sync Work?
 redux-file-sync applications are "offline-first". They store actions locally,
 and will sync to the cloud file when the internet connection allows it.

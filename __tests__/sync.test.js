@@ -1,5 +1,5 @@
 import TestApp from "./helpers/TestApp";
-import { SYNCED } from "../src/constants"
+import { SYNCED } from "../src/selectors";
 
 describe("sync", () => {
   describe("sync a new app to an empty cloud file", () => {
