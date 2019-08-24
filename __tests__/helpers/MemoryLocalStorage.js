@@ -1,19 +1,14 @@
 export default function MemoryLocalStorage() {
   let text = "";
 
-  function read() {
+  function getItem() {
     return Promise.resolve(text);
   }
 
-  function write(key, newText) {
+  function setItem(key, newText) {
     text = newText;
     return Promise.resolve();
   }
 
-  function reset() {
-    text = "";
-    return Promise.resolve();
-  }
-
-  return { read, write, reset };
+  return { getItem, setItem };
 }

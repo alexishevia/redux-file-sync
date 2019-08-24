@@ -21,7 +21,7 @@ export default function LocalFile({ localStorage, cloudStorage, reducer }) {
 
   // load() fetches data from localStorage
   async function load() {
-    const str = await localStorage.read(KEY);
+    const str = await localStorage.getItem(KEY);
     if (!str) return;
     let initialState;
     ({ path, text, revision, lineCount, store: initialState } = JSON.parse(
@@ -32,7 +32,7 @@ export default function LocalFile({ localStorage, cloudStorage, reducer }) {
 
   // save() stores values into localStorage
   async function save() {
-    await localStorage.write(
+    await localStorage.setItem(
       KEY,
       JSON.stringify({
         path,
