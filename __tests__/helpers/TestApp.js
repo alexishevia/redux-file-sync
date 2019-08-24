@@ -14,7 +14,6 @@ export default function TestApp({ cloudStorage } = {}) {
   const reduxFileSync = ReduxFileSync(rootReducer, {
     whitelist: ["todos"],
     actionsToSync: ["todos/add", "todos/check", "todos/uncheck", "todos/delete"],
-    localStorage: new MemoryLocalStorage(),
   });
 
   const store = createStore(reduxFileSync.reducer, compose(applyMiddleware(thunk)));
@@ -22,6 +21,7 @@ export default function TestApp({ cloudStorage } = {}) {
   const syncThunk = () => (dispatch, getState) => {
     return reduxFileSync.sync({
       store: { dispatch, getState },
+      localStorage: new MemoryLocalStorage(),
       cloudStorage,
     });
   };

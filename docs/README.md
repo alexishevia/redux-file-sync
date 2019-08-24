@@ -18,7 +18,6 @@ redux-file-sync lets you sync two or more app instances using a cloud storage fi
 2. Wrap your root reducer with the provided ReduxFileSync constructor:
     ```
     // reduxFileSync.js
-    import { AsyncStorage } from 'react-native';
     import ReduxFileSync from 'redux-file-sync';
     import rootReducer from './yourRootReducer';
 
@@ -29,7 +28,6 @@ redux-file-sync lets you sync two or more app instances using a cloud storage fi
         "todos/uncheck",
       ],
       whitelist: ["todos"],
-      localStorage: AsyncStorage,
     });
 
     export default reduxFileSync;
@@ -42,7 +40,6 @@ redux-file-sync lets you sync two or more app instances using a cloud storage fi
       Only the actions specified in `actionsToSync` will be uploaded to the cloud file.
       - `whitelist`: fields to sync.  
       When changes are downloaded, only fields in `whitelist` will be updated on the local redux store.
-      - `localStorage`: either [AsyncStorage](https://facebook.github.io/react-native/docs/asyncstorage) or an object with a compatible API.
 
 3. Create your redux store using the reducer returned by reduxFileSync:
 
@@ -58,6 +55,7 @@ redux-file-sync lets you sync two or more app instances using a cloud storage fi
 4. Finally, run the `sync()` function whenever you want to synchronize your local store to the cloud file:
     ```
     // syncThunk.js
+    import { AsyncStorage } from 'react-native';
     import { provider, getAccessToken, getFilePath } from 'redux-file-sync/dropbox';
     import reduxFileSync from './reduxFileSync';
 
@@ -68,6 +66,7 @@ redux-file-sync lets you sync two or more app instances using a cloud storage fi
 
       return reduxFileSync.sync({
         store: { dispatch, getState },
+        localStorage: AsyncStorage,
         cloudStorage: provider({ accessToken, path })
       });
     };
@@ -77,6 +76,7 @@ redux-file-sync lets you sync two or more app instances using a cloud storage fi
 
     The `sync` function accepts a single argument, which must be an object with:
     - `store`: Either the redux store or a similar object with `dispatch()` and `getState()` functions.
+    - `localStorage`: [AsyncStorage](https://facebook.github.io/react-native/docs/asyncstorage) or an object with a compatible API.
     - `cloudStorage`: Dropbox is the only cloud storage provider supported in this initial version.  
         The Dropbox provider requires the user's access token and the path to the cloud file. If you're using the [Dropbox FilePicker](#dropbox-filepicker), you can obtain these using the `getAccessToken` and `getFilePath` selectors. If you're not, make sure to pass a valid `accessToken` and `path` to the Dropbox provider.
 
