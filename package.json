@@ -1,0 +1,60 @@
+{
+  "name": "redux-file-sync",
+  "version": "0.0.1",
+  "description": "Sync your redux actions to an external file system.",
+  "author": "Alexis Hevia <hevia.alexis@gmail.com>",
+  "license": "ISC",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+    "dropbox": "^4.0.30",
+    "redux": "^4.0.4",
+    "redux-starter-kit": "^0.6.3"
+  },
+  "devDependencies": {
+    "acorn": "^7.0.0",
+    "acorn-jsx": "^5.0.1",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "docsify-cli": "^4.3.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb": "^18.0.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^22.15.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "husky": "^3.0.3",
+    "jest": "^24.8.0",
+    "lint-staged": "^9.2.1",
+    "prettier": "^1.18.2",
+    "redux-thunk": "^2.3.0"
+  },
+  "scripts": {
+    "docs": "docsify serve ./docs",
+    "lint": "eslint src/**/*.js",
+    "test": "jest",
+    "test-debug": "node --inspect-brk=0.0.0.0:9229 ./node_modules/.bin/jest"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules",
+      "__tests__/helpers/"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run lint && npm run test"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,json,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  }
+}
