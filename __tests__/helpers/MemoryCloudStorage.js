@@ -2,6 +2,10 @@ export default function MemoryCloudStorage() {
   let text = "";
   let revision = 0;
 
+  function isReady() {
+    return true;
+  }
+
   function revisionStr() {
     return `${revision}`;
   }
@@ -30,6 +34,7 @@ export default function MemoryCloudStorage() {
     get revision() {
       return revisionStr();
     },
+    isReady,
     getLatestRevision,
     pull: () => Promise.resolve(),
     push

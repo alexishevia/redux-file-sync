@@ -14,6 +14,12 @@ export default async function sync({ store, reducer, localStorage, cloudStorage 
     console.log("sync is already running. ignoring sync() call");
     return;
   }
+
+  if (!cloudStorage.isReady()) {
+    store.dispatch(fail({ errorMessage: 'Cloud storage is not connected.' }));
+    return;
+  }
+
   const startTime = new Date().getTime();
 
   try {

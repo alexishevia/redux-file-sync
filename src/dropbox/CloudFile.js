@@ -3,12 +3,13 @@ import loadFile from "./api/loadFile";
 import writeFile from "./api/writeFile";
 
 export default function DropboxCloudFile({ accessToken, path } = {}) {
-  if (!accessToken || !path) {
-    throw new Error("Dropbox is not connected.");
-  }
-
   let text = "";
   let revision = null;
+
+  // isReady returns true if dropbox is connected
+  function isReady() {
+    return accessToken && path;
+  }
 
   // getLatestRevision() fetches revision value from Dropbox
   // (not from local value)
@@ -46,6 +47,7 @@ export default function DropboxCloudFile({ accessToken, path } = {}) {
     get path() {
       return path;
     },
+    isReady,
     getLatestRevision,
     pull,
     push
