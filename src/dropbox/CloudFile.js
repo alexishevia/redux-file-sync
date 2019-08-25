@@ -1,12 +1,8 @@
 import getFileRevision from "./api/getFileRevision";
 import loadFile from "./api/loadFile";
 import writeFile from "./api/writeFile";
-import { getAccessToken, getFilePath } from "./selectors";
 
-export default function DropboxCloudFile(store) {
-  const state = store.getState();
-  const accessToken = getAccessToken(state);
-  const path = getFilePath(state);
+export default function DropboxCloudFile({ accessToken, path } = {}) {
   if (!accessToken || !path) {
     throw new Error("Dropbox is not connected.");
   }
