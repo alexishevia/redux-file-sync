@@ -9,11 +9,11 @@ export const ONE_MINUTE = 60 * 1000;
 export const TIMEOUT = ONE_MINUTE;
 
 export function getLocalActions(state) {
-  return (state._sync && state._sync.localActions) || [];
+  return (state.reduxFileSync && state.reduxFileSync.localActions) || [];
 }
 
 export function getSyncState(state) {
-  const { startedAt = 0, succeededAt = 0, failedAt = 0 } = state._sync || {};
+  const { startedAt = 0, succeededAt = 0, failedAt = 0 } = state.reduxFileSync || {};
   if (startedAt > succeededAt && startedAt > failedAt) {
     const now = new Date().getTime();
     return now - startedAt > TIMEOUT ? FAILED : RUNNING;
@@ -28,7 +28,7 @@ export function getSyncState(state) {
 }
 
 export function getErrorMessage(state) {
-  return state._sync && state._sync.errorMessage;
+  return state.reduxFileSync && state.reduxFileSync.errorMessage;
 }
 
 export function isSyncRunning(state) {

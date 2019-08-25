@@ -1,7 +1,6 @@
 /* eslint no-param-reassign: [0] */
 
-import { applyMiddleware, createStore, compose } from 'redux';
-import thunk from "redux-thunk";
+import { createStore } from 'redux';
 import ReduxFileSync from "../../src";
 import { getLocalActions, getSyncState } from "../../src/selectors";
 import MemoryLocalStorage from './MemoryLocalStorage';
@@ -16,19 +15,7 @@ export default function TestApp({ cloudStorage } = {}) {
     actionsToSync: ["todos/add", "todos/check", "todos/uncheck", "todos/delete"],
   });
 
-  const store = createStore(reduxFileSync.reducer, compose(applyMiddleware(thunk)));
-
-  const syncThunk = () => (dispatch, getState) => {
-    return reduxFileSync.sync({
-      store: { dispatch, getState },
-      localStorage: new MemoryLocalStorage(),
-      cloudStorage,
-    });
-  };
-
-  function dispatchActions(actions) {
-    actions.forEach(store.dispatch);
-  }
+  const store = createStore(reduxFileSync.reducer);
 
   return {
     get store() {
@@ -47,8 +34,14 @@ export default function TestApp({ cloudStorage } = {}) {
       return getSyncState(store.getState());
     },
     sync() {
-      return store.dispatch(syncThunk({ cloudStorage }));
+      return reduxFileSync.sync({
+        store,
+        localStorage: new MemoryLocalStorage(),
+        cloudStorage,
+      });
     },
-    dispatchActions,
+    dispatchActions(actions) {
+      actions.forEach(store.dispatch);
+    }
   };
 }

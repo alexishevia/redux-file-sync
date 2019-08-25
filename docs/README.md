@@ -56,8 +56,10 @@ redux-file-sync lets you sync two or more app instances using a cloud storage fi
     ```
     // syncThunk.js
     import { AsyncStorage } from 'react-native';
-    import { provider, getAccessToken, getFilePath } from 'redux-file-sync/dropbox';
+    import { provider, selectors } from 'redux-file-sync/lib/dropbox';
     import reduxFileSync from './reduxFileSync';
+
+    const { getAccessToken, getFilePath } = selectors;
 
     const syncThunk = () => (dispatch, getState) => {
       const state = getState();
@@ -111,7 +113,7 @@ redux-file-sync lets you sync two or more app instances using a cloud storage fi
 If you are using [expo](https://docs.expo.io), you can use the provided Dropbox `<FilePicker />` component to allow your users to connect to Dropbox and choose the file to sync against.
 
 ```
-import { FilePicker } from 'redux-file-sync/dropbox';
+import { FilePicker } from 'redux-file-sync/lib/dropbox';
 
 class Settings extends React.Component {
   render() {
@@ -186,14 +188,14 @@ redux-file-sync applications keep data in three places:
    - `store`: serialized redux store built by processing all actions in the cloud file.
 3. redux store  
    This is the plain-old store you would see in any redux application. It is kept in memory, but should also be persisted to disk using  something like [redux-persist](https://github.com/rt2zz/redux-persist).  
-   redux-file-sync adds a `_sync` property to the redux store. The `_sync.localActions[]` array stores actions that have been executed locally but have not been written to the cloud file yet.
+   redux-file-sync adds a `reduxFileSync` property to the redux store. The `reduxFileSync.localActions[]` array stores actions that have been executed locally but have not been written to the cloud file yet.
 
 Synchronization is executed in 4 steps, which run in sequential order:
 
 1. Download cloud file  
     Changes in the cloud file are appended to the local file.
 2. Append local actions  
-    Actions in `_sync.localActions[]` are appended to the local file.
+    Actions in `reduxFileSync.localActions[]` are appended to the local file.
 3. Upload local file  
     The local file's text is uploaded to the cloud file.
 3. Update local store  

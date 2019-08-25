@@ -28,7 +28,7 @@ function todosReducer(state = [], action) {
 
 const rootReducer = combineReducers({
   todos: todosReducer,
-  _sync: (state = {}) => state,
+  reduxFileSync: (state = {}) => state,
 });
 
 export default rootReducer;

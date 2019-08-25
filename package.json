@@ -1,6 +1,6 @@
 {
   "name": "redux-file-sync",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Sync your redux actions to an external file system.",
   "author": "Alexis Hevia <hevia.alexis@gmail.com>",
   "license": "ISC",
@@ -45,7 +45,8 @@
     "test-debug": "node --inspect-brk=0.0.0.0:9229 ./node_modules/.bin/jest",
     "build-index": "webpack --entry ./src/index.js -o ./lib/index.js --devtool source-map --mode production --output-library-target commonjs-module",
     "build-selectors": "webpack --entry ./src/selectors.js -o ./lib/selectors.js --devtool source-map --mode production --output-library-target commonjs-module",
-    "build": "npm run build-index && npm run build-selectors"
+    "build-dropbox": "webpack --entry ./src/dropbox/index.js -o ./lib/dropbox.js --devtool source-map --mode production --output-library-target commonjs-module",
+    "build": "npm run build-index && npm run build-selectors && npm run build-dropbox"
   },
   "jest": {
     "testPathIgnorePatterns": [

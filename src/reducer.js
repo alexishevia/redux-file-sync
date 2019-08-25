@@ -1,13 +1,13 @@
-/* eslint no-underscore-dangle:[0] */
-
 import { START, SUCCESS, FAIL, REHYDRATE, REMOVE_ACTIONS } from "./actions";
+import dropboxReducer from "./dropbox/reducer";
 
 const initialState = {
   startedAt: 0,
   succeededAt: 0,
   failedAt: 0,
   errorMessage: null,
-  localActions: []
+  localActions: [],
+  dropbox: {},
 };
 
 function pick(obj, keys) {
@@ -21,16 +21,16 @@ export default function syncReducer(
   { whitelist = [], actionsToSync = [] }
 ) {
   return function reduce(state = {}, action) {
-    let newState = state._sync ? state : { ...state, _sync: initialState };
+    let newState = state.reduxFileSync ? state : { ...state, reduxFileSync: initialState };
 
     if (action.type === START) {
       const startedAt = action.payload || new Date().getTime();
-      newState = { ...state, _sync: { ...state._sync, startedAt } };
+      newState = { ...state, reduxFileSync: { ...state.reduxFileSync, startedAt } };
     }
 
     if (action.type === SUCCESS) {
       const succeededAt = action.payload || new Date().getTime();
-      newState = { ...state, _sync: { ...state._sync, succeededAt } };
+      newState = { ...state, reduxFileSync: { ...state.reduxFileSync, succeededAt } };
     }
 
     if (action.type === FAIL) {
@@ -39,7 +39,7 @@ export default function syncReducer(
       const failedAt = time || new Date().getTime();
       newState = {
         ...state,
-        _sync: { ...state._sync, failedAt, errorMessage }
+        reduxFileSync: { ...state.reduxFileSync, failedAt, errorMessage }
       };
     }
 
@@ -50,18 +50,26 @@ export default function syncReducer(
     if (action.type === REMOVE_ACTIONS) {
       const actionsToRemove = action.payload || [];
       const localActions = (
-        (state._sync && state._sync.localActions) ||
+        (state.reduxFileSync && state.reduxFileSync.localActions) ||
         []
       ).filter(ac => !actionsToRemove.includes(ac));
-      newState = { ...state, _sync: { ...state._sync, localActions } };
+      newState = { ...state, reduxFileSync: { ...state.reduxFileSync, localActions } };
     }
 
     if (actionsToSync.includes(action.type)) {
       const localActions = [
-        ...((state._sync && state._sync.localActions) || []),
+        ...((state.reduxFileSync && state.reduxFileSync.localActions) || []),
         action
       ];
-      newState = { ...state, _sync: { ...state._sync, localActions } };
+      newState = { ...state, reduxFileSync: { ...state.reduxFileSync, localActions } };
+    }
+
+    const newDropboxState = dropboxReducer(newState.reduxFileSync.dropbox, action);
+    if (newDropboxState !== newState.reduxFileSync.dropbox) {
+      newState = {
+        ...newState,
+        reduxFileSync: { ...newState.reduxFileSync, dropbox: newDropboxState }
+      };
     }
 
     return baseReducer(newState, action);

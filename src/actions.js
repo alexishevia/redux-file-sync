@@ -1,9 +1,9 @@
 // actions used by the sync reducer
-export const START = "__sync_start__";
-export const SUCCESS = "__sync_success__";
-export const FAIL = "__sync_fail__";
-export const REHYDRATE = "__sync_restore__";
-export const REMOVE_ACTIONS = "__sync_remove_actions__";
+export const START = "reduxFileSync/start";
+export const SUCCESS = "reduxFileSync/success";
+export const FAIL = "reduxFileSync/fail";
+export const REHYDRATE = "reduxFileSync/restore";
+export const REMOVE_ACTIONS = "reduxFileSync/removeActions";
 
 export function start(time) {
   return { type: START, payload: time };
