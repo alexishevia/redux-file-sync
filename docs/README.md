@@ -80,7 +80,7 @@ redux-file-sync lets you sync two or more app instances using a cloud storage fi
     - `store`: Either the redux store or a similar object with `dispatch()` and `getState()` functions.
     - `localStorage`: [AsyncStorage](https://facebook.github.io/react-native/docs/asyncstorage) or an object with a compatible API.
     - `cloudStorage`: Dropbox is the only cloud storage provider supported in this initial version.  
-        The Dropbox provider requires the user's access token and the path to the cloud file. If you're using the [Dropbox FilePicker](#dropbox-filepicker), you can obtain these using the `getAccessToken` and `getFilePath` selectors. If you're not, make sure to pass a valid `accessToken` and `path` to the Dropbox provider.
+        The Dropbox provider requires the user's access token and the path to the cloud file. You can use the provided Dropbox [actions](https://github.com/alexishevia/redux-file-sync/blob/master/src/dropbox/actions.js) and [selectors](https://github.com/alexishevia/redux-file-sync/blob/master/src/dropbox/selectors.js) to read/write these values.  
 
     Note: In this example I'm running `sync()` inside a [thunk](https://github.com/reduxjs/redux-thunk). You might choose to use a different pattern.
 
@@ -108,26 +108,6 @@ redux-file-sync lets you sync two or more app instances using a cloud storage fi
 
     export default connect(mapStateToProps, mapDispatchToProps)(YourComponent);
     ```
-
-## Dropbox FilePicker
-If you are using [expo](https://docs.expo.io), you can use the provided Dropbox `<FilePicker />` component to allow your users to connect to Dropbox and choose the file to sync against.
-
-```
-import { FilePicker } from 'redux-file-sync/lib/dropbox';
-
-class Settings extends React.Component {
-  render() {
-    return (
-      <View style={{ flex: 1 }}>
-        <Text>Settings</Text>
-        <FilePicker key="YOUR_APP_KEY" />
-      </View>
-    )
-  }
-}
-```
-
-The FilePicker requires your "App key", which is available on the [Dropbox App console](https://www.dropbox.com/developers/apps).
 
 ## Sync Status
 If you want to know the sync status, you can use the provided `getSyncState()` and `getErrorMessage()` selectors:
