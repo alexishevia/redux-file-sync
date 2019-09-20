@@ -58,9 +58,9 @@ export default function LocalFile({ localStorage, cloudStorage, reducer }) {
 
   // pull() fetches data from cloudStorage
   // Note: also updates localStorage.
-  async function pull() {
+  async function pull({ reprocessAll } = {}) {
     await load();
-    if (cloudStorage.path !== path) {
+    if (cloudStorage.path !== path || reprocessAll) {
       reset();
     }
     ({ path } = cloudStorage);

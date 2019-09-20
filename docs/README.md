@@ -69,7 +69,8 @@ redux-file-sync lets you sync two or more app instances using a cloud storage fi
       return reduxFileSync.sync({
         store: { dispatch, getState },
         localStorage: AsyncStorage,
-        cloudStorage: provider({ accessToken, path })
+        cloudStorage: provider({ accessToken, path }),
+        reprocessAll: false,
       });
     };
 
@@ -81,6 +82,7 @@ redux-file-sync lets you sync two or more app instances using a cloud storage fi
     - `localStorage`: [AsyncStorage](https://facebook.github.io/react-native/docs/asyncstorage) or an object with a compatible API.
     - `cloudStorage`: Dropbox is the only cloud storage provider supported in this initial version.  
         The Dropbox provider requires the user's access token and the path to the cloud file. You can use the provided Dropbox [actions](https://github.com/alexishevia/redux-file-sync/blob/master/src/dropbox/actions.js) and [selectors](https://github.com/alexishevia/redux-file-sync/blob/master/src/dropbox/selectors.js) to read/write these values.  
+    - `reprocessAll`: when `true`, the cloud file is completely re-processed. When `false`, only new events (since last sync) are processed. If you change your reducer logic, it is recommended to reprocess all events.
 
     Note: In this example I'm running `sync()` inside a [thunk](https://github.com/reduxjs/redux-thunk). You might choose to use a different pattern.
 

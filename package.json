@@ -1,6 +1,6 @@
 {
   "name": "redux-file-sync",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "description": "Sync your redux actions to an external file system.",
   "author": "Alexis Hevia <hevia.alexis@gmail.com>",
   "license": "ISC",

@@ -3,7 +3,7 @@ import { start, success, fail, rehydrateStore, removeLocalActions } from "./acti
 import { isSyncRunning, getLocalActions } from "./selectors";
 import stringifyError from "./stringifyError";
 
-export default async function sync({ store, reducer, localStorage, cloudStorage }) {
+export default async function sync({ store, reducer, localStorage, cloudStorage, reprocessAll }) {
   if (!store || !store.getState || !store.dispatch)
     throw new Error("store is required");
   if (!reducer) throw new Error('reducer is required');
@@ -26,7 +26,7 @@ export default async function sync({ store, reducer, localStorage, cloudStorage 
     store.dispatch(start(startTime));
 
     const localFile = new LocalFile({ reducer, localStorage, cloudStorage });
-    await localFile.pull();
+    await localFile.pull({ reprocessAll });
 
     const actionsToUpload = getLocalActions(store.getState());
     if (actionsToUpload.length) {
